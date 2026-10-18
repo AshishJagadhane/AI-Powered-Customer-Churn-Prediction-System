@@ -1,0 +1,139 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction System</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f6fc;
+            color: #172554;
+        }
+
+        nav {
+            background: #14213d;
+            color: white;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        nav h2 {
+            margin: 0;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .hero {
+            max-width: 1000px;
+            margin: 90px auto;
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: clamp(30px, 5vw, 48px);
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: #526078;
+            line-height: 1.8;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 25px;
+            margin: 6px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 0 20px 60px;
+        }
+
+        .feature {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 270px;
+            box-shadow: 0 4px 18px #17255412;
+        }
+
+        .feature h3 {
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h2>ChurnPredict AI</h2>
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('login') }}">Customer Login</a>
+            <a href="{{ url_for('register') }}">Register</a>
+            <a href="{{ url_for('admin_dashboard') }}">Admin</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Predict Customer Churn with AI</h1>
+        <p>
+            Understand customer behavior, identify potential churn risks,
+            and explore data-driven insights through our Customer Churn
+            Prediction System.
+        </p>
+        <a class="btn" href="{{ url_for('login') }}">Customer Login</a>
+        <a class="btn btn-secondary"
+           href="{{ url_for('register') }}">Create Account</a>
+    </section>
+
+    <section class="features">
+        <div class="feature">
+            <h3>AI Predictions</h3>
+            <p>Support customer retention with churn-risk predictions.</p>
+        </div>
+        <div class="feature">
+            <h3>Customer Dashboard</h3>
+            <p>Access the customer area after signing in.</p>
+        </div>
+        <div class="feature">
+            <h3>Admin Analytics</h3>
+            <p>Provide authorized administrators with customer insights.</p>
+        </div>
+    </section>
+
+</body>
+</html>
+```

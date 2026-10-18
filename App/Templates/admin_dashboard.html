@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Analytics | ChurnPredict AI</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f3f6fc;
+            margin: 0;
+            color: #172554;
+        }
+
+        nav {
+            background: #14213d;
+            color: white;
+            padding: 18px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        nav .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            color: #93c5fd;
+        }
+
+        main {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 20px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            margin-bottom: 28px;
+        }
+
+        .section-title {
+            margin-top: 35px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+        }
+
+        .card,
+        .panel {
+            background: white;
+            border-radius: 14px;
+            padding: 23px;
+            box-shadow: 0 4px 16px #0000000b;
+            border: 1px solid #e8edf5;
+        }
+
+        .label {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0 0 12px;
+        }
+
+        .value {
+            font-size: 29px;
+            font-weight: bold;
+            color: #2563eb;
+            overflow-wrap: anywhere;
+        }
+
+        .small-note {
+            color: #64748b;
+            font-size: 12px;
+            margin-top: 10px;
+            line-height: 1.5;
+        }
+
+        .blue {
+            color: #2563eb;
+        }
+
+        .red {
+            color: #dc2626;
+        }
+
+        .amber {
+            color: #d97706;
+        }
+
+        .green {
+            color: #059669;
+        }
+
+        .panel {
+            margin-top: 25px;
+        }
+
+        .risk-row {
+            display: grid;
+            grid-template-columns: 100px minmax(50px, 1fr) 45px;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0;
+            font-size: 14px;
+        }
+
+        .bar-container {
+            width: 100%;
+            height: 20px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .bar {
+            height: 100%;
+            width: 0;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .high-risk {
+            background: #ef4444;
+        }
+
+        .medium-risk {
+            background: #f59e0b;
+        }
+
+        .low-risk {
+            background: #10b981;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            background: white;
+            border-radius: 14px;
+            margin-top: 25px;
+            padding: 20px;
+            box-shadow: 0 4px 16px #0000000b;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 750px;
+        }
+
+        th,
+        td {
+            padding: 13px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+        }
+
+        th {
+            background: #eff6ff;
+            color: #1e3a8a;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+
+        .High-Risk {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .Medium-Risk {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .Low-Risk {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .empty {
+            padding: 25px;
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            main {
+                padding: 14px;
+                margin: 15px auto;
+            }
+
+            .card,
+            .panel,
+            .table-wrap {
+                padding: 16px;
+            }
+
+            .value {
+                font-size: 25px;
+            }
+
+            .risk-row {
+                grid-template-columns: 85px minmax(40px, 1fr) 35px;
+                gap: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <strong>ChurnPredict AI — Admin</strong>
+
+    <div class="links">
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('predict_churn') }}">New Prediction</a>
+        <a href="{{ url_for('prediction_history') }}">Prediction History</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</nav>
+
+<main>
+
+    <h1>Admin Analytics Dashboard</h1>
+    <p class="subtitle">
+        Customer churn overview and live ML prediction analytics.
+    </p>
+
+    <!-- CUSTOMER DATABASE OVERVIEW -->
+    <h2>Customer Dataset Overview</h2>
+
+    <div class="grid">
+        <div class="card">
+            <p class="label">Total Customers</p>
+            <div class="value blue">{{ metrics[0] }}</div>
+        </div>
+
+        <div class="card">
+            <p class="label">Customers Churned</p>
+            <div class="value red">{{ metrics[1] }}</div>
+        </div>
+
+        <div class="card">
+            <p class="label">High-Risk Customers</p>
+            <div class="value amber">{{ metrics[2] }}</div>
+        </div>
+
+        <div class="card">
+            <p class="label">Average Churn Probability</p>
+            <div class="value">
+                {{ "%.1f"|format(metrics[3]|float * 100) }}%
+            </div>
+        </div>
+    </div>
+
+    <!-- LIVE PREDICTION ANALYTICS -->
+    <h2 class="section-title">Live Prediction Analytics</h2>
+
+    <div class="grid">
+
+        <div class="card">
+            <p class="label">Total Predictions</p>
+            <div class="value blue">
+                {{ prediction_metrics.total }}
+            </div>
+            <p class="small-note">Predictions saved through the website.</p>
+        </div>
+
+        <div class="card">
+            <p class="label">High-Risk Predictions</p>
+            <div class="value red">
+                {{ prediction_metrics.high }}
+            </div>
+            <p class="small-note">Predicted probability of 70% or higher.</p>
+        </div>
+
+        <div class="card">
+            <p class="label">Medium-Risk Predictions</p>
+            <div class="value amber">
+                {{ prediction_metrics.medium }}
+            </div>
+            <p class="small-note">Predicted probability from 40% to below 70%.</p>
+        </div>
+
+        <div class="card">
+            <p class="label">Low-Risk Predictions</p>
+            <div class="value green">
+                {{ prediction_metrics.low }}
+            </div>
+            <p class="small-note">Predicted probability below 40%.</p>
+        </div>
+
+        <div class="card">
+            <p class="label">Average Predicted Probability</p>
+            <div class="value">
+                {{ "%.1f"|format(prediction_metrics.average_probability|float) }}%
+            </div>
+            <p class="small-note">Average across saved prediction records.</p>
+        </div>
+
+        <div class="card">
+            <p class="label">High-Risk Monthly Charges</p>
+            <div class="value">
+                ₹{{ "{:,.2f}".format(prediction_metrics.revenue_at_risk|float) }}
+            </div>
+            <p class="small-note">
+                Sum of monthly charges on high-risk prediction records.
+                Repeat predictions may be counted more than once.
+                This is not confirmed lost revenue.
+            </p>
+        </div>
+
+    </div>
+
+    <!-- RISK DISTRIBUTION CHART -->
+    <div class="panel">
+        <h2>Prediction Risk Distribution</h2>
+        <p class="subtitle">
+            Distribution of saved predictions by risk category.
+        </p>
+
+        <div class="risk-row">
+            <span>High Risk</span>
+            <div class="bar-container">
+                <div class="bar high-risk"
+                     data-width="{{ risk_widths.high }}"></div>
+            </div>
+            <strong>{{ prediction_metrics.high }}</strong>
+        </div>
+
+        <div class="risk-row">
+            <span>Medium Risk</span>
+            <div class="bar-container">
+                <div class="bar medium-risk"
+                     data-width="{{ risk_widths.medium }}"></div>
+            </div>
+            <strong>{{ prediction_metrics.medium }}</strong>
+        </div>
+
+        <div class="risk-row">
+            <span>Low Risk</span>
+            <div class="bar-container">
+                <div class="bar low-risk"
+                     data-width="{{ risk_widths.low }}"></div>
+            </div>
+            <strong>{{ prediction_metrics.low }}</strong>
+        </div>
+
+        {% if prediction_metrics.total == 0 %}
+        <p class="empty">
+            No predictions have been saved yet. Run a prediction
+            to populate these analytics.
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- HIGHEST-RISK CUSTOMERS TABLE -->
+    <div class="table-wrap">
+        <h2>20 Highest-Risk Customers</h2>
+        <p class="subtitle">
+            Ranked using the existing customer dataset.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer ID</th>
+                    <th>Contract</th>
+                    <th>Churn Probability</th>
+                    <th>Risk Level</th>
+                    <th>Retention Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for row in customers %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>
+                        {{ "%.1f"|format(row[2]|float * 100) }}%
+                    </td>
+                    <td>
+                        <span class="badge {{ row[3]|replace(' ', '-') }}">
+                            {{ row[3] }}
+                        </span>
+                    </td>
+                    <td>{{ row[4] }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">No customer records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<script>
+document.querySelectorAll(".bar[data-width]").forEach(function (bar) {
+    const width = Number(bar.dataset.width);
+
+    if (Number.isFinite(width)) {
+        bar.style.width = Math.max(0, Math.min(100, width)) + "%";
+    }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Customer Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f3f6fc; margin: 0; color: #172554; }
+        nav { background: #14213d; color: white; padding: 20px 7%; display: flex; justify-content: space-between; }
+        nav a { color: white; text-decoration: none; }
+        main { max-width: 950px; margin: 40px auto; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; }
+        .card { background: white; border-radius: 12px; padding: 22px; box-shadow: 0 4px 16px #0001; }
+        .value { font-size: 25px; font-weight: bold; color: #2563eb; overflow-wrap: anywhere; }
+        .label { color: #64748b; }
+    </style>
+</head>
+<body>
+<nav>
+    <strong>ChurnPredict AI</strong>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</nav>
+<main>
+    <h1>Customer Dashboard</h1>
+    <p>Your customer information and churn-risk assessment.</p>
+    <div class="grid">
+        <div class="card"><p class="label">Customer ID</p><div class="value">{{ customer[0] }}</div></div>
+        <div class="card"><p class="label">Contract Type</p><div class="value">{{ customer[1] }}</div></div>
+        <div class="card"><p class="label">Tenure (months)</p><div class="value">{{ customer[2] }}</div></div>
+        <div class="card"><p class="label">Monthly Charges</p><div class="value">{{ "%.2f"|format(customer[3]|float) }}</div></div>
+        <div class="card"><p class="label">Satisfaction Score</p><div class="value">{{ customer[4] }}</div></div>
+        <div class="card"><p class="label">Churn Probability</p><div class="value">{{ "%.1f"|format(customer[5]|float * 100) }}%</div></div>
+        <div class="card"><p class="label">Risk Level</p><div class="value">{{ customer[6] }}</div></div>
+        <div class="card"><p class="label">Retention Recommendation</p><div class="value">{{ customer[7] }}</div></div>
+    </div>
+</main>
+</body>
+</html>
+```

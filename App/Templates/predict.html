@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Customer Churn</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 30px 16px;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 5px 24px #00000010;
+        }
+        h1 { margin-top: 0; color: #173b70; }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+        input, select {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+        }
+        button, .back {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 12px 20px;
+            border: 0;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+        .error { color: #b91c1c; margin-top: 18px; }
+        .risk { font-size: 22px; font-weight: bold; }
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+            .container { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Customer Churn Prediction</h1>
+    <p>Enter customer details to estimate churn probability.</p>
+
+    <form method="POST">
+        <div class="grid">
+            <div>
+                <label>Gender</label>
+                <select name="gender" required>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+            </div>
+            <div>
+                <label>Age</label>
+                <input type="number" name="age" min="18" max="100" required>
+            </div>
+            <div>
+                <label>Tenure (months)</label>
+                <input type="number" name="tenure_months" min="1" max="72" required>
+            </div>
+            <div>
+                <label>Contract Type</label>
+                <select name="contract_type" required>
+                    <option>Monthly</option>
+                    <option>One Year</option>
+                    <option>Two Year</option>
+                </select>
+            </div>
+            <div>
+                <label>Monthly Charges</label>
+                <input type="number" name="monthly_charges" min="0" step="0.01" required>
+            </div>
+            <div>
+                <label>Total Charges</label>
+                <input type="number" name="total_charges" min="0" step="0.01" required>
+            </div>
+            <div>
+                <label>Payment Method</label>
+                <select name="payment_method" required>
+                    <option>Credit Card</option>
+                    <option>Debit Card</option>
+                    <option>UPI</option>
+                    <option>Bank Transfer</option>
+                    <option>Cash</option>
+                    <option>Unknown</option>
+                </select>
+            </div>
+            <div>
+                <label>Internet Service</label>
+                <select name="internet_service" required>
+                    <option>Fiber</option>
+                    <option>DSL</option>
+                    <option>None</option>
+                    <option>Unknown</option>
+                </select>
+            </div>
+            <div>
+                <label>Support Tickets</label>
+                <input type="number" name="support_tickets" min="0" required>
+            </div>
+            <div>
+                <label>Complaints</label>
+                <input type="number" name="complaints" min="0" required>
+            </div>
+            <div>
+                <label>Average Monthly Usage (GB)</label>
+                <input type="number" name="avg_monthly_usage_gb" min="0" step="0.01" required>
+            </div>
+            <div>
+                <label>Login Frequency (per month)</label>
+                <input type="number" name="login_frequency" min="1" max="30" required>
+            </div>
+            <div>
+                <label>Discount (%)</label>
+                <select name="discount_percent" required>
+                    <option value="0">0%</option>
+                    <option value="5">5%</option>
+                    <option value="10">10%</option>
+                    <option value="15">15%</option>
+                    <option value="20">20%</option>
+                </select>
+            </div>
+            <div>
+                <label>Satisfaction Score (1–10)</label>
+                <input type="number" name="satisfaction_score" min="1" max="10" required>
+            </div>
+            <div>
+                <label>Late Payments</label>
+                <input type="number" name="late_payments" min="0" required>
+            </div>
+        </div>
+
+        <button type="submit">Predict Churn</button>
+        <a class="back" href="{{ url_for('admin_dashboard') }}">Back to Admin</a>
+    </form>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    {% if result %}
+        <div class="result">
+            <h2>Prediction Result</h2>
+            <p>Estimated churn probability:</p>
+            <div class="risk">{{ result.probability }}%</div>
+            <p>Risk level: <strong>{{ result.risk }}</strong></p>
+            <p>Suggested action: {{ result.action }}</p>
+            <p><small>This is a model estimate, not a certainty.</small></p>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>

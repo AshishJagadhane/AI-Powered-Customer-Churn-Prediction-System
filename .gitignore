@@ -1,0 +1,42 @@
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Python virtual environments
+.venv/
+venv/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Local configuration and instance files
+.vscode/
+instance/
+
+# Log files
+*.log
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.bak
+
+# Customer churn datasets - keep local until verified
+NoteBooks/Data/Raw/*.csv
+NoteBooks/Data/Processed/customer_churn_cleaned.csv
+NoteBooks/Data/Processed/customer_churn_feature_engineered.csv
+NoteBooks/Data/Processed/customer_churn_ml_output.csv
+
+
+# Unnecessary template archive
+App/Templates/Templates.rar
